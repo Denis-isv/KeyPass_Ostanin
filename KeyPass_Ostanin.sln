@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.37628.2 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyPass_Ostanin", "KeyPass_Ostanin\KeyPass_Ostanin.csproj", "{B4DF9227-C9F7-41DB-AB94-C2B91D5331C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppKeyPass_Ostanin", "AppKeyPass_Ostanin\AppKeyPass_Ostanin.csproj", "{F9B61D99-E6F5-40F9-9395-8B9CEC377E60}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{B4DF9227-C9F7-41DB-AB94-C2B91D5331C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4DF9227-C9F7-41DB-AB94-C2B91D5331C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4DF9227-C9F7-41DB-AB94-C2B91D5331C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9B61D99-E6F5-40F9-9395-8B9CEC377E60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9B61D99-E6F5-40F9-9395-8B9CEC377E60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9B61D99-E6F5-40F9-9395-8B9CEC377E60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9B61D99-E6F5-40F9-9395-8B9CEC377E60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
