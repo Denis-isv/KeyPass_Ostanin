@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37628.2 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyPass_Ostanin", "KeyPass_Ostanin\KeyPass_Ostanin.csproj", "{B4DF9227-C9F7-41DB-AB94-C2B91D5331C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4DF9227-C9F7-41DB-AB94-C2B91D5331C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4DF9227-C9F7-41DB-AB94-C2B91D5331C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4DF9227-C9F7-41DB-AB94-C2B91D5331C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4DF9227-C9F7-41DB-AB94-C2B91D5331C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6B2C34E2-4D66-4A50-844D-A449DAB0BD1C}
+	EndGlobalSection
+EndGlobal
