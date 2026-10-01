@@ -6,12 +6,11 @@ using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 namespace KeyPass_Ostanin.Controllers
 {
     [RouteAttribute("/storage")]
-
     public class StorageController : Controller
     {
         private DatabaseManager databaseManager;
-        public StorageController() =>
-            this.databaseManager = new DatabaseManager();
+        public StorageController() => this.databaseManager = new DatabaseManager();
+
         [Route("get")]
         [HttpGet]
         public ActionResult Get([FromHeader] string token)
@@ -19,8 +18,8 @@ namespace KeyPass_Ostanin.Controllers
             try
             {
                 int? IdUser = JwtToken.GetUserIdFromToken(token);
-                if (IdUser == null)
-                    return StatusCode(401);
+                if (IdUser == null) return StatusCode(401);
+
                 List<StorageDto> Storages = databaseManager.Storages
                     .Where(x => x.User.Id == IdUser)
                     .Select(s => new StorageDto
@@ -30,15 +29,12 @@ namespace KeyPass_Ostanin.Controllers
                         Url = s.Url,
                         Login = s.Login,
                         Password = s.Password
-                    })
-                    .ToList();
+                    }).ToList();
                 return Ok(Storages);
             }
-            catch (Exception exp)
-            {
-                return StatusCode(501, exp.Message);
-            }
+            catch (Exception exp) { return StatusCode(501, exp.Message); }
         }
+
         [Route("add")]
         [HttpPost]
         public ActionResult Add([FromHeader] string token, [FromBody] Storage storage)
@@ -46,21 +42,17 @@ namespace KeyPass_Ostanin.Controllers
             try
             {
                 int? IdUser = JwtToken.GetUserIdFromToken(token);
-                if (IdUser == null)
-                    return StatusCode(401);
-                storage.User = databaseManager.Users
-                    .Where(x => x.Id == IdUser)
-                    .First();
+                if (IdUser == null) return StatusCode(401);
+
+                storage.User = databaseManager.Users.Where(x => x.Id == IdUser).First();
                 databaseManager.Add(storage);
                 databaseManager.SaveChanges();
                 storage.User = null;
                 return StatusCode(200, storage);
             }
-            catch (Exception exp)
-            {
-                return StatusCode(501, exp.Message);
-            }
+            catch (Exception exp) { return StatusCode(501, exp.Message); }
         }
+
         [Route("update")]
         [HttpPut]
         public ActionResult Update([FromHeader] string token, [FromBody] Storage storage)
@@ -68,26 +60,23 @@ namespace KeyPass_Ostanin.Controllers
             try
             {
                 int? IdUser = JwtToken.GetUserIdFromToken(token);
-                Storage? uStorage = databaseManager.Storages
-                    .Where(x => x.Id == storage.Id)
-                    .FirstOrDefault();
-                if (IdUser == null)
-                    return StatusCode(401);
-                if (uStorage == null)
-                    return StatusCode(404);
-                uStorage.Name = storage.Name;
-                uStorage.Url = storage.Url;
-                uStorage.Login = storage.Login;
-                uStorage.Password = storage.Password;
+                Storage? foundStorage = databaseManager.Storages
+                    .Where(x => x.Id == storage.Id).FirstOrDefault();
+
+                if (IdUser == null) return StatusCode(401);
+                if (foundStorage == null) return StatusCode(404);
+
+                foundStorage.Name = storage.Name;
+                foundStorage.Url = storage.Url;
+                foundStorage.Login = storage.Login;
+                foundStorage.Password = storage.Password;
                 databaseManager.SaveChanges();
                 storage.User = null;
                 return StatusCode(200, storage);
             }
-            catch (Exception exp)
-            {
-                return StatusCode(501, exp.Message);
-            }
+            catch (Exception exp) { return StatusCode(501, exp.Message); }
         }
+
         [Route("delete")]
         [HttpDelete]
         public ActionResult Delete([FromHeader] string token, [FromForm] int id)
@@ -95,22 +84,17 @@ namespace KeyPass_Ostanin.Controllers
             try
             {
                 int? IdUser = JwtToken.GetUserIdFromToken(token);
-                Storage? Storage = databaseManager.Storages
-                    .Where(x => x.Id == id && x.User.Id == IdUser)
-                    .FirstOrDefault();
-                if (IdUser == null)
-                    return StatusCode(401);
-                if (Storage == null)
-                    return StatusCode(404);
-                databaseManager.Storages.Remove(Storage);
-                databaseManager.SaveChanges();
+                Storage? foundStorage = databaseManager.Storages
+                    .Where(x => x.Id == id && x.User.Id == IdUser).FirstOrDefault();
 
+                if (IdUser == null) return StatusCode(401);
+                if (foundStorage == null) return StatusCode(404);
+
+                databaseManager.Storages.Remove(foundStorage);
+                databaseManager.SaveChanges();
                 return StatusCode(200);
             }
-            catch (Exception exp)
-            {
-                return StatusCode(501, exp.Message);
-            }
+            catch (Exception exp) { return StatusCode(501, exp.Message); }
         }
     }
 }

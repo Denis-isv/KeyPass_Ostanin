@@ -8,7 +8,7 @@ namespace KeyPass_Ostanin.Classes
 {
     public class JwtToken
     {
-        static byte[] Key = Encoding.UTF8.GetBytes("PERMAVIAT_THE_BEST!!!!!!!!!!");
+        static byte[] Key = Encoding.UTF8.GetBytes("KeyPassSuperSecretKeyForJwtTokens2026!!");
         public static string Generate(User user)
         {
             JwtSecurityTokenHandler TokenHandler = new JwtSecurityTokenHandler();

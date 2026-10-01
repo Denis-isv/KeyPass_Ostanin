@@ -2,112 +2,131 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace AppKeyPass_Ostanin.Contexts
 {
     public class StorageContext
     {
-        static string url = "https://localhost:7163/storage/";
+        static string url = "https://localhost:7135/storage/";
 
         public static async Task<List<Storage>?> Get()
         {
-            using (HttpClient Client = new HttpClient())
+            try
             {
-                using (HttpRequestMessage Request = new HttpRequestMessage(HttpMethod.Get, url + "get"))
+                using (HttpClient Client = new HttpClient())
                 {
-                    Request.Headers.Add("token", MainWindow.Token);
-
-                    var Response = await Client.SendAsync(Request);
-
-                    if (Response.StatusCode == HttpStatusCode.OK)
+                    using (HttpRequestMessage Request = new HttpRequestMessage(HttpMethod.Get, url + "get"))
                     {
-                        string sResponse = await Response.Content.ReadAsStringAsync();
-                        List<Storage> Storages = JsonConvert.DeserializeObject<List<Storage>>(sResponse);
-                        return Storages;
+                        Request.Headers.Add("token", MainWindow.Token ?? "");
+                        var Response = await Client.SendAsync(Request);
+
+                        if (Response.StatusCode == HttpStatusCode.OK)
+                        {
+                            string sResponse = await Response.Content.ReadAsStringAsync();
+                            return JsonConvert.DeserializeObject<List<Storage>>(sResponse);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка загрузки:\n" + ex.Message);
             }
             return null;
         }
 
         public static async Task<Storage> Add(Storage storage)
         {
-            using (HttpClient Client = new HttpClient())
+            try
             {
-                using (HttpRequestMessage Request = new HttpRequestMessage(HttpMethod.Post, url + "add"))
+                using (HttpClient Client = new HttpClient())
                 {
-                    Request.Headers.Add("token", MainWindow.Token);
-
-                    string JsonStorage = JsonConvert.SerializeObject(storage);
-                    var Content = new StringContent(JsonStorage, Encoding.UTF8, "application/json");
-                    Request.Content = Content;
-
-                    var Response = await Client.SendAsync(Request);
-
-                    if (Response.StatusCode == HttpStatusCode.OK)
+                    using (HttpRequestMessage Request = new HttpRequestMessage(HttpMethod.Post, url + "add"))
                     {
-                        string sResponse = await Response.Content.ReadAsStringAsync();
-                        Storage Storage = JsonConvert.DeserializeObject<Storage>(sResponse);
-                        return Storage;
+                        Request.Headers.Add("token", MainWindow.Token ?? "");
+                        string JsonStorage = JsonConvert.SerializeObject(storage);
+                        Request.Content = new StringContent(JsonStorage, Encoding.UTF8, "application/json");
+
+                        var Response = await Client.SendAsync(Request);
+
+                        if (Response.StatusCode == HttpStatusCode.OK)
+                        {
+                            string sResponse = await Response.Content.ReadAsStringAsync();
+                            return JsonConvert.DeserializeObject<Storage>(sResponse);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Сервер вернул ошибку: " + Response.StatusCode);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка добавления:\n" + ex.Message);
             }
             return null;
         }
 
         public static async Task<Storage> Update(Storage storage)
         {
-            using (HttpClient Client = new HttpClient())
+            try
             {
-                using (HttpRequestMessage Request = new HttpRequestMessage(HttpMethod.Put, url + "update"))
+                using (HttpClient Client = new HttpClient())
                 {
-                    Request.Headers.Add("token", MainWindow.Token);
-
-                    string JsonStorage = JsonConvert.SerializeObject(storage);
-                    var Content = new StringContent(JsonStorage, Encoding.UTF8, "application/json");
-                    Request.Content = Content;
-
-                    var Response = await Client.SendAsync(Request);
-
-                    if (Response.StatusCode == HttpStatusCode.OK)
+                    using (HttpRequestMessage Request = new HttpRequestMessage(HttpMethod.Put, url + "update"))
                     {
-                        string sResponse = await Response.Content.ReadAsStringAsync();
-                        Storage Storage = JsonConvert.DeserializeObject<Storage>(sResponse);
-                        return Storage;
+                        Request.Headers.Add("token", MainWindow.Token ?? "");
+                        string JsonStorage = JsonConvert.SerializeObject(storage);
+                        Request.Content = new StringContent(JsonStorage, Encoding.UTF8, "application/json");
+
+                        var Response = await Client.SendAsync(Request);
+
+                        if (Response.StatusCode == HttpStatusCode.OK)
+                        {
+                            string sResponse = await Response.Content.ReadAsStringAsync();
+                            return JsonConvert.DeserializeObject<Storage>(sResponse);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Сервер вернул ошибку: " + Response.StatusCode);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка обновления:\n" + ex.Message);
             }
             return null;
         }
 
         public static async Task Delete(int id)
         {
-            using (HttpClient Client = new HttpClient())
+            try
             {
-                using (HttpRequestMessage Request = new HttpRequestMessage(HttpMethod.Delete, url + "delete"))
+                using (HttpClient Client = new HttpClient())
                 {
-                    Request.Headers.Add("token", MainWindow.Token);
-
-                    Dictionary<string, string> FormData = new Dictionary<string, string>
+                    using (HttpRequestMessage Request = new HttpRequestMessage(HttpMethod.Delete, url + "delete"))
                     {
-                        ["id"] = id.ToString()
-                    };
+                        Request.Headers.Add("token", MainWindow.Token ?? "");
+                        Dictionary<string, string> FormData = new Dictionary<string, string> { ["id"] = id.ToString() };
+                        Request.Content = new FormUrlEncodedContent(FormData);
 
-                    FormUrlEncodedContent Content = new FormUrlEncodedContent(FormData);
-                    Request.Content = Content;
-
-                    var Response = await Client.SendAsync(Request);
-
-                    if (Response.StatusCode == HttpStatusCode.OK)
-                    {
-                        string sResponse = await Response.Content.ReadAsStringAsync();
+                        var Response = await Client.SendAsync(Request);
+                        if (Response.StatusCode != HttpStatusCode.OK)
+                            MessageBox.Show("Ошибка удаления: " + Response.StatusCode);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка удаления:\n" + ex.Message);
             }
         }
     }

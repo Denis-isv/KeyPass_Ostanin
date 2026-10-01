@@ -1,42 +1,29 @@
-﻿using System.Windows;
+﻿using AppKeyPass_Ostanin.Contexts;
+using System.Windows;
 using System.Windows.Controls;
-using AppKeyPass_Ostanin.Contexts;
 
 namespace AppKeyPass_Ostanin.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для Login.xaml
-    /// </summary>
     public partial class Login : Page
     {
         public Login()
         {
             InitializeComponent();
         }
-        public async Task Auth(string login, string password)
+
+        private async void Login_Click(object sender, RoutedEventArgs e)
         {
-            string? Token = await UserContext.Login(login, password);
-            if (Token == null)
+            string token = await UserContext.Login(tbLogin.Text, tbPassword.Password);
+
+            if (!string.IsNullOrEmpty(token))
             {
-                MessageBox.Show("Бро ты не попал...");
+                MainWindow.Token = token;
+                MainWindow.init.OpenPages(new Pages.Main());
             }
             else
             {
-                MainWindow.Token = Token;
-                MainWindow.init.OpenPages(new Pages.Main());
+                MessageBox.Show("Неверный логин или пароль!");
             }
-        }
-        private async void BtnAuth(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbLogin.Text))
-            {
-                MessageBox.Show("Укажите логин: ");
-            }
-            if (string.IsNullOrEmpty(tbPassword.Password))
-            {
-                MessageBox.Show("Укажите пароль:");
-            }
-            await Auth(tbLogin.Text, tbPassword.Password);
         }
     }
 }

@@ -1,18 +1,14 @@
-﻿using AppKeyPass_Ostanin.Models;
-using Newtonsoft.Json;
-using System;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AppKeyPass_Ostanin.Contexts
 {
     public class UserContext
     {
-        static string url = "https://localhost:7163/user/";
+        static string url = "https://localhost:7135/user/";
 
         public static async Task<string> Login(string login, string password)
         {
@@ -34,8 +30,8 @@ namespace AppKeyPass_Ostanin.Contexts
                     if (Response.StatusCode == HttpStatusCode.OK)
                     {
                         string sResponse = await Response.Content.ReadAsStringAsync();
-                        Auth DataAuth = JsonConvert.DeserializeObject<Auth>(sResponse);
-                        return DataAuth.Token;
+                        JObject json = JObject.Parse(sResponse);
+                        return json["token"].ToString();
                     }
                 }
             }
