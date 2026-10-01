@@ -9,9 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\" />
     <Folder Include="Elements\" />
-    <Folder Include="Contexts\" />
   </ItemGroup>
 
 </Project>
